@@ -1,11 +1,22 @@
 workflows:
   Well Testing:
-    name: iOS Build
+    name: Well Testing
+    max_build_duration: 60
     environment:
       flutter: stable
       xcode: latest
     scripts:
-      - flutter pub get
-      - flutter build ios --release
+      - name: Show files (debug)
+        script: |
+          echo "CM_BUILD_DIR=$CM_BUILD_DIR"
+          ls -la $CM_BUILD_DIR
+      - name: Get packages
+        script: |
+          cd $CM_BUILD_DIR/mobile   # <-- CHANGE to your real folder: well_test, app, etc.
+          flutter pub get
+      - name: Build iOS (simulator example)
+        script: |
+          cd $CM_BUILD_DIR/mobile   # same folder as above
+          flutter build ios --simulator --debug
     artifacts:
-      - build/ios/ipa/*.ipa
+      - mobile/build/ios/iphonesimulator/*.app  # adjust the prefix (mobile/) to match your folder
